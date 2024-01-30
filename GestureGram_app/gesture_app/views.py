@@ -1,5 +1,6 @@
 from django.http import StreamingHttpResponse
 from django.shortcuts import render
+from django.conf import settings
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -7,8 +8,8 @@ from tensorflow.keras.models import load_model
 
 def gesture_detection_view(request):
     def generate():
-        model = load_model("model.h5")
-        labels = np.load("labels.npy")
+        model = load_model("gesture_app\labels.npy")
+        labels = np.load("gesture_app\labels.npy")
         holistic = mp.solutions.holistic.Holistic()
         cap = cv2.VideoCapture(0)
 
