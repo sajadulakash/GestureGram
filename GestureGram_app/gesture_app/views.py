@@ -8,8 +8,8 @@ from tensorflow.keras.models import load_model
 
 def gesture_detection_view(request):
     def generate():
-        model = load_model("gesture_app\labels.npy")
-        labels = np.load("gesture_app\labels.npy")
+        model = load_model(os.path.join(settings.BASE_DIR, "models/model.h5"))
+        labels = np.load(os.path.join(settings.BASE_DIR, "models/labels.npy"))
         holistic = mp.solutions.holistic.Holistic()
         cap = cv2.VideoCapture(0)
 
