@@ -1,10 +1,11 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, url_for, Response, static_folder
 import cv2
 import numpy as np
 import mediapipe as mp
 from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
+app.static_folder = 'static'  # Set static folder path
 
 # Load your model and labels (adjust paths as needed)
 model = load_model("model.h5")
