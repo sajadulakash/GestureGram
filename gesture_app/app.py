@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, Response, static_folder
+from flask import Flask, render_template, url_for, Response
 import cv2
 import numpy as np
 import mediapipe as mp
