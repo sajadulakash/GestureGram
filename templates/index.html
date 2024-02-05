@@ -48,7 +48,26 @@
     .btn:hover {
       background-color: #3e8e41; /* Darker green on hover */
     }
+    #stop-button {
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        z-index: 1; /* Ensure button stays on top of video */
+      }
   </style>
+  <script>
+    function stopVideo() {
+      // Send a request to a Flask route handling the stop action
+      fetch('/stop_video', { method: 'POST' })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = '{{ url_for('index') }}'; // Redirect to homepage
+          } else {
+            // Handle error (optional)
+          }
+        });
+    }
+  </script>
 </head>
 <body>
   <h1>Welcome to the GestureGram App!</h1>
