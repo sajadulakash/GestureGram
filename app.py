@@ -23,6 +23,9 @@ def generate_frames():
 
         # Process frame with MediaPipe
         results = holistic.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        
+        cv2.putText(frame, " Press 'Q' to Stop Video", (100, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+
 
         # Gesture detection logic
         if results.face_landmarks:
