@@ -56,17 +56,6 @@
       }
   </style>
   <script>
-    function stopVideo() {
-      // Send a request to a Flask route handling the stop action
-      fetch('/stop_video', { method: 'POST' })
-        .then(response => {
-          if (response.ok) {
-            window.location.href = '{{ url_for('index') }}'; // Redirect to homepage
-          } else {
-            // Handle error (optional)
-          }
-        });
-    }
   </script>
 </head>
 <body>
