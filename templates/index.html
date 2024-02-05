@@ -1,26 +1,15 @@
 <!DOCTYPE html>
-<style>
-    .btn {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-      }
-      
-</style>
-<html>
+<html lang="en">
 <head>
     <title>Gesture Detection App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" integrity="sha384-0evSXBZdN/wnnTUN9K9lQp5rYzSC6qQtgO1nIGbgZedJCmwzYj3yBnPlPlQ9zCYLq" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Welcome to the Gesture Detection App!</h1>
-    <p>Click the button below to open the gesture detection interface.</p>
-    <a href="{{ url_for('video_feed') }}" class="btn btn-primary">Start Gesture Detection</a>
+    <div class="container text-center mt-5">
+        <h1>Welcome to the Gesture Detection App!</h1>
+        <p>Click the button below to open the gesture detection interface.</p>
+        <a href="{{ url_for('video_feed') }}" class="btn btn-primary btn-lg">Start Gesture Detection</a>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ppWq28aU3opjIcbcLJMsNsPg62Blrx1o+T6hCX7mFs3gT5vL19i9u+AWCSb8dhcO" crossorigin="anonymous"></script>
 </body>
 </html>
