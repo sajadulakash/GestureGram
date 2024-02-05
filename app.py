@@ -65,5 +65,10 @@ def index():
 def video_feed():
     return render_template('video_feed.html')
 
+@app.route('/video_frame_stream')
+def video_frame_stream():
+    """Generate video frames as a response."""
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 if __name__ == '__main__':
     app.run(debug=True)  # Enable debug mode for easier development
