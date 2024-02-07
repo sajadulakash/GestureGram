@@ -62,7 +62,9 @@
 </head>
 <body>
   <h1>Welcome to the GestureGram App!</h1>
-  <p>Click the button below to open the gesture detection interface.</p>
-  <a href="{{ url_for('video_feed') }}" class="btn">Start Gesture Detection</a>
+  <p>Click the button below base on your prefereance.</p>
+  <a href="{{ url_for('set_feed') }}" class="btn">Set Your own Language</a>
+  <br>
+  <a href="{{ url_for('video_feed') }}" class="btn">Use Pre-trained Model</a>
 </body>
 </html>
