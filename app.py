@@ -65,6 +65,10 @@ def index():
 def video_feed():
     return render_template('video_feed.html')
 
+@app.route('/set_feed')
+def video_feed():
+    return render_template('set_feed.html')
+
 @app.route('/video_frame_stream')
 def video_frame_stream():
     """Generate video frames as a response."""
