@@ -69,7 +69,7 @@
         if (xhr.readyState === XMLHttpRequest.DONE) {
           if (xhr.status === 200) {
             // Update the prediction value in the output box
-            document.getElementById('output-box2').innerText = xhr.responseText;
+            document.getElementById('output-box1').innerText = xhr.responseText;
           } else {
             // Handle errors
             console.error('Error fetching prediction value:', xhr.status);
