@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, Response
+from flask import Flask, render_template, url_for, Response, jsonify
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -16,7 +16,6 @@ holistic = mp.solutions.holistic.Holistic()
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
-    pred = "Initial Prediction"  # Initialize pred outside the loop
     
     while True:
         success, frame = cap.read()
@@ -25,6 +24,9 @@ def generate_frames():
 
         # Process frame with MediaPipe
         results = holistic.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        
+        # Gesture detection logic
+        pred = "Initial Prediction"  # Initialize pred for each frame
 
         # Gesture detection logic
         if results.face_landmarks:
@@ -54,8 +56,15 @@ def generate_frames():
         # Encode frame as JPEG for streaming
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
+        
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
+        # Return frame and predicted gesture label as JSON data
+        yield (b'--frame\r\n'
+               b'Content-Type: application/json\r\n\r\n' +
+               jsonify({'frame': cv2.imencode('.jpg', frame)[1].tobytes(),
+                       'pred': pred}).json().encode() + b'\r\n')
 
 #Flask app code
 
@@ -74,6 +83,10 @@ def video_feed():
 @app.route('/video_frame_stream')
 def video_frame_stream():
     """Generate video frames as a response."""
+    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_frame_stream_events')  # New route for event stream
+def video_frame_stream_events():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
