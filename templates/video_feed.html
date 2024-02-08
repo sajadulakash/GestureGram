@@ -62,10 +62,26 @@
   </style>
 
   <script>
-    var source = new EventSource("/pred");
-    source.onmessage = function(event) {
-      document.getElementById('output-box2').innerHTML = event.data;
-    };
+    // Function to update the prediction value
+    function updatePrediction() {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // Update the prediction value in the output box
+            document.getElementById('output-box2').innerText = xhr.responseText;
+          } else {
+            // Handle errors
+            console.error('Error fetching prediction value:', xhr.status);
+          }
+        }
+      };
+      xhr.open('GET', '/pred', true);
+      xhr.send();
+    }
+
+    // Function to periodically update the prediction value
+    setInterval(updatePrediction, 1000); // Update every 1 second
   </script>
 
 </head>
@@ -81,6 +97,7 @@
   <h1>Text Box:</h1>
   <div id="output-box2">
     <!-- Output will be printed here -->
+    {{pred}}
   </div>
   <br>
   <button class="btnn">Speak</button>
