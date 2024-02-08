@@ -16,6 +16,7 @@ holistic = mp.solutions.holistic.Holistic()
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
+    pred = "Initial Prediction"  # Initialize pred outside the loop
     
     while True:
         success, frame = cap.read()
@@ -54,7 +55,7 @@ def generate_frames():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n', pred)
 
 #Flask app code
 
@@ -64,7 +65,6 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    pred = pred 
     return render_template('video_feed.html', pred = pred)
 
 #@app.route('/set_feed')
