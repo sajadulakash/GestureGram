@@ -67,6 +67,17 @@
     }
   </script>
 
+  <script>
+    const eventSource = new EventSource("/video_frame_stream_events");
+    eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        const pred = data.pred;
+
+        // Update the text box with the predicted gesture
+        updateTextBox(pred);
+    };
+  </script>
+
 </head>
 <body>
   <h1>Camera:</h1>
