@@ -43,6 +43,7 @@ def generate_frames():
             lst = np.array(lst).reshape(1, -1)
             pred = labels[np.argmax(model.predict(lst))]
             cv2.putText(frame, pred, (50, 50), cv2.FONT_ITALIC, 1, (255, 0, 0), 2)
+            print(pred)
 
         # Draw landmarks
         mp.solutions.drawing_utils.draw_landmarks(frame, results.face_landmarks, mp.solutions.drawing_styles.get_default_face_mesh_contours_style())
@@ -63,7 +64,8 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    return render_template('video_feed.html')
+    pred = pred 
+    return render_template('video_feed.html', pred = pred)
 
 #@app.route('/set_feed')
 #def video_feed():
