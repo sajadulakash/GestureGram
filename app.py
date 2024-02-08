@@ -16,6 +16,7 @@ holistic = mp.solutions.holistic.Holistic()
 
 def generate_frames():
     cap = cv2.VideoCapture(0)
+    pred = "Initial Prediction"  # Initialize pred outside the loop
     
     while True:
         success, frame = cap.read()
@@ -25,8 +26,6 @@ def generate_frames():
         # Process frame with MediaPipe
         results = holistic.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         
-        # Gesture detection logic
-        pred = "Initial Prediction"  # Initialize pred for each frame
 
         # Gesture detection logic
         if results.face_landmarks:
@@ -68,7 +67,7 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    return render_template('video_feed.html', pred= "Initial Prediction")
+    return render_template('video_feed.html')
 
 #@app.route('/set_feed')
 #def video_feed():
