@@ -55,7 +55,7 @@ def generate_frames():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n', pred)
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 #Flask app code
 
@@ -65,7 +65,7 @@ def index():
 
 @app.route('/video_feed')
 def video_feed():
-    return render_template('video_feed.html', pred = pred)
+    return render_template('video_feed.html', pred= "Initial Prediction")
 
 #@app.route('/set_feed')
 #def video_feed():
