@@ -14,9 +14,13 @@ labels = np.load("labels.npy")
 # Initialize MediaPipe holistic model
 holistic = mp.solutions.holistic.Holistic()
 
+# Global variable to store the prediction
+pred = "Initial Prediction"
+
 def generate_frames():
     cap = cv2.VideoCapture(0)
-    pred = "Initial Prediction"  # Initialize pred outside the loop
+    global pred  # Access the global variable
+
     
     while True:
         success, frame = cap.read()
@@ -56,7 +60,7 @@ def generate_frames():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n', pred)
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         
 
 #Flask app code
@@ -80,10 +84,8 @@ def video_frame_stream():
 
 @app.route('/pred')
 def get_pred():
-    def generate():
-        while True:
-            yield f"data: {pred}\n\n"
-    return Response(generate(), mimetype='text/event-stream')
+    global pred  # Access the global variable
+    return pred
 
 if __name__ == '__main__':
     app.run(debug=True)  # Enable debug mode for easier development
