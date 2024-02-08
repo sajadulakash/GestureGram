@@ -57,7 +57,7 @@ def generate_frames():
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n', pred)
         
 
 #Flask app code
@@ -78,6 +78,13 @@ def video_feed():
 def video_frame_stream():
     """Generate video frames as a response."""
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/pred')
+def get_pred():
+    def generate():
+        while True:
+            yield f"data: {pred}\n\n"
+    return Response(generate(), mimetype='text/event-stream')
 
 if __name__ == '__main__':
     app.run(debug=True)  # Enable debug mode for easier development
