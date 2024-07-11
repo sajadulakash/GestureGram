@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, Response
+from flask import Flask, render_template, url_for, Response, jsonify
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -14,8 +14,13 @@ labels = np.load("labels.npy")
 # Initialize MediaPipe holistic model
 holistic = mp.solutions.holistic.Holistic()
 
+# Global variable to store the prediction
+pred = "Initial Prediction"
+
 def generate_frames():
     cap = cv2.VideoCapture(0)
+    global pred  # Access the global variable
+
     
     while True:
         success, frame = cap.read()
@@ -24,6 +29,7 @@ def generate_frames():
 
         # Process frame with MediaPipe
         results = holistic.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        
 
         # Gesture detection logic
         if results.face_landmarks:
@@ -43,6 +49,7 @@ def generate_frames():
             lst = np.array(lst).reshape(1, -1)
             pred = labels[np.argmax(model.predict(lst))]
             cv2.putText(frame, pred, (50, 50), cv2.FONT_ITALIC, 1, (255, 0, 0), 2)
+            print(pred)
 
         # Draw landmarks
         mp.solutions.drawing_utils.draw_landmarks(frame, results.face_landmarks, mp.solutions.drawing_styles.get_default_face_mesh_contours_style())
@@ -54,6 +61,7 @@ def generate_frames():
         frame = buffer.tobytes()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        
 
 #Flask app code
 
@@ -66,13 +74,18 @@ def video_feed():
     return render_template('video_feed.html')
 
 @app.route('/set_feed')
-def video_feed():
+def set_feed():
     return render_template('set_feed.html')
 
 @app.route('/video_frame_stream')
 def video_frame_stream():
     """Generate video frames as a response."""
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/pred')
+def get_pred():
+    global pred  # Access the global variable
+    return pred
 
 if __name__ == '__main__':
     app.run(debug=True)  # Enable debug mode for easier development
